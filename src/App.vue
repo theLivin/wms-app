@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { pwaInstaller } from "./composables/pwaInstaller.js";
+import { ref } from "vue";
 import GeoMap from "./components/GeoMap.vue";
 
 export default {
@@ -23,7 +23,26 @@ export default {
   },
 
   setup() {
-    const { installer, installBtn } = pwaInstaller;
+    let installPrompt = null;
+    let installBtn = ref("none");
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      installPrompt = e;
+      installBtn.value = "block";
+    });
+
+    const installer = () => {
+      installBtn.value = "none";
+      installPrompt.prompt();
+      installPrompt.userChoice.then((result) => {
+        if (result.outcome === "accepted") {
+          console.log("Install accepted!");
+        } else {
+          console.log("Install denied!");
+        }
+      });
+    };
 
     return { installer, installBtn };
   },
