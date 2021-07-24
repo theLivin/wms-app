@@ -8,43 +8,24 @@
     <h1>Install!</h1>
   </a>
 
-  <HelloWorld msg="Welcome to Your Vue 3 PWA App" />
+  <GeoMap />
 </template>
 
 <script>
-import { ref } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import { pwaInstaller } from "./composables/pwaInstaller.js";
+import GeoMap from "./components/GeoMap.vue";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    GeoMap,
   },
 
   setup() {
-    let installPrompt = null;
-    let installBtn = ref("none");
+    const { installer, installBtn } = pwaInstaller;
 
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      installPrompt = e;
-      installBtn.value = "block";
-    });
-
-    let installer = () => {
-      installBtn.value = "none";
-      installPrompt.prompt();
-      installPrompt.userChoice.then((result) => {
-        if (result.outcome === "accepted") {
-          console.log("Install accepted!");
-        } else {
-          console.log("Install denied!");
-        }
-      });
-    };
-
-    return { installer };
+    return { installer, installBtn };
   },
 };
 </script>
@@ -57,18 +38,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
