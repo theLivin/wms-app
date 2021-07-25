@@ -1,5 +1,4 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
   <a
     style="cursor:pointer"
     :style="{ display: installBtn }"
@@ -8,7 +7,12 @@
     <h1>Install!</h1>
   </a>
 
-  <GeoMap />
+  <div
+    style="width: 100%;
+        height:400px;"
+  >
+    <GeoMap />
+  </div>
 </template>
 
 <script>
