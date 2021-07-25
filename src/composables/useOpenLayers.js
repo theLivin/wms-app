@@ -1,14 +1,13 @@
-/* eslint-disable */
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 import Point from "ol/geom/Point";
-import { Map, Feature, View } from "ol";
+import Feature from "ol/Feature";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
-import { TileWMS, Vector as VectorSource, OSM, TileJSON } from "ol/source";
+import { TileWMS, Vector as VectorSource, OSM } from "ol/source";
 import { Modify } from "ol/interaction";
 import { Icon, Style } from "ol/style";
 
-export function useOpenLayers(geoMap, olMap) {
+export function useOpenLayers(geoMap) {
   const iconFeature = ref(null);
 
   iconFeature.value = new Feature({
@@ -37,10 +36,6 @@ export function useOpenLayers(geoMap, olMap) {
   const layers = [
     new TileLayer({
       source: new OSM(),
-      // source: new TileJSON({
-      //   url: "https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure=1",
-      //   crossOrigin: "",
-      // }),
     }),
     new TileLayer({
       source: new TileWMS({
@@ -53,8 +48,6 @@ export function useOpenLayers(geoMap, olMap) {
     vectorLayer,
   ];
 
-  /*
-  // Draggable marker  
   const modify = new Modify({
     hitDetection: vectorLayer,
     source: vectorSource,
@@ -68,23 +61,6 @@ export function useOpenLayers(geoMap, olMap) {
   overlaySource.on(["addfeature", "removefeature"], function(evt) {
     geoMap.value.style.cursor = evt.type === "addfeature" ? "pointer" : "";
   });
-  */
 
-  onMounted(() => {
-    olMap.value = new Map({
-      layers: layers,
-      target: geoMap.value,
-      view: new View({
-        center: [-10997148, 4569099],
-        zoom: 7,
-      }),
-    });
-
-    /*
-    // Draggable marker -- Cont'd  
-    olMap.value.addInteraction(modify);
-    */
-  });
-
-  return { iconFeature };
+  return { iconFeature, modify, layers };
 }
