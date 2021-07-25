@@ -1,17 +1,22 @@
 <template>
-  <h1>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <select
+        class="form-select text-uppercase"
+        v-model="selected"
+        @change="onSelect"
+      >
+        <option value="osm">osm with gps data</option>
+        <option value="wms">world map via wms</option>
+        <option value="mq">mapquest</option>
+      </select>
+    </div>
+  </nav>
+  <!-- <h1>
     Your position: Longitude:
     {{ currPos.lng }}, Latitude: {{ currPos.lat }}
-  </h1>
-  <label for="pet-select">Choose a pet:</label>
+  </h1> -->
 
-  <select name="pets" id="pet-select" v-model="selected" @change="onSelect">
-    <option value="osm">osm with gps data</option>
-    <option value="wms">world map via wms</option>
-    <option value="mq">mapquest</option>
-  </select>
-
-  <h3>you selected {{ selected }}</h3>
   <div ref="geoMap" style="width: 100%; height: 100%"></div>
 </template>
 
@@ -58,12 +63,14 @@ export default {
     const onSelect = () => {
       if (selected.value == "wms") {
         olMap.value.setLayerGroup(layersWMS);
+        olMap.value.getView().setZoom(4);
       } else if (selected.value == "osm") {
         olMap.value.setLayerGroup(layersOSM);
+        olMap.value.getView().setZoom(14);
       } else {
         olMap.value.setLayerGroup(layersMQ);
+        olMap.value.getView().setZoom(4);
       }
-      olMap.value.getView().setZoom(4);
     };
 
     onMounted(() => {
@@ -71,8 +78,8 @@ export default {
         layers: layersOSM,
         target: geoMap.value,
         view: new View({
-          center: [-10997148, 4569099],
-          zoom: 7,
+          center: [-0.187, 5.6037],
+          zoom: 4,
         }),
       });
     });
@@ -82,7 +89,6 @@ export default {
       olMap.value
         .getView()
         .setCenter(fromLonLat([currPos.value.lng, currPos.value.lat]));
-      olMap.value.getView().setZoom(14);
 
       iconFeature.value.setGeometry(
         new Point(fromLonLat([currPos.value.lng, currPos.value.lat]))

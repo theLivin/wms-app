@@ -1,17 +1,20 @@
 <template>
-  <a
-    style="cursor:pointer"
-    :style="{ display: installBtn }"
-    @click="installer()"
-  >
-    <h1>Install!</h1>
-  </a>
+  <div style="width: 100%; height: 100vh">
+    <nav
+      class="navbar navbar-light"
+      style="background-color: #e3f2fd;"
+      :style="{ display: installBtn }"
+    >
+      <div class="container-fluid justify-content-end">
+        <button class="btn btn-primary" @click="installer()">
+          Install!
+        </button>
+      </div>
+    </nav>
 
-  <div
-    style="width: 100%;
-        height:400px;"
-  >
-    <GeoMap />
+    <div style="width: 100%; height:100%;">
+      <GeoMap />
+    </div>
   </div>
 </template>
 
@@ -58,7 +61,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>
