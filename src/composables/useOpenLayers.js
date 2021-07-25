@@ -3,11 +3,10 @@ import { ref } from "vue";
 import Point from "ol/geom/Point";
 import Feature from "ol/Feature";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
-import { TileWMS, Vector as VectorSource, OSM } from "ol/source";
-import { Modify } from "ol/interaction";
+import { TileWMS, Vector as VectorSource, OSM, TileJSON } from "ol/source";
 import { Icon, Style } from "ol/style";
 
-export function useOpenLayers(geoMap) {
+export function useOpenLayers() {
   const iconFeature = ref(null);
 
   iconFeature.value = new Feature({
@@ -25,18 +24,16 @@ export function useOpenLayers(geoMap) {
 
   iconFeature.value.setStyle(iconStyle);
 
-  const vectorSource = new VectorSource({
-    features: [iconFeature.value],
-  });
-
-  const vectorLayer = new VectorLayer({
-    source: vectorSource,
-  });
-
   const layers = [
     new TileLayer({
       source: new OSM(),
-    }),
+    }), // osm layer
+    new TileLayer({
+      source: new TileJSON({
+        url: "https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure=1",
+        crossOrigin: "",
+      }),
+    }), // mapquest layer
     new TileLayer({
       source: new TileWMS({
         url: "http://localhost:8090/geoserver/wmsproject/wms",
@@ -44,23 +41,13 @@ export function useOpenLayers(geoMap) {
         serverType: "geoserver",
         transition: 0,
       }),
-    }),
-    vectorLayer,
+    }), // wms layer
+    new VectorLayer({
+      source: new VectorSource({
+        features: [iconFeature.value],
+      }),
+    }), // marker icon layer
   ];
 
-  const modify = new Modify({
-    hitDetection: vectorLayer,
-    source: vectorSource,
-  });
-  modify.on(["modifystart", "modifyend"], function(evt) {
-    geoMap.value.style.cursor =
-      evt.type === "modifystart" ? "grabbing" : "pointer";
-  });
-
-  const overlaySource = modify.getOverlay().getSource();
-  overlaySource.on(["addfeature", "removefeature"], function(evt) {
-    geoMap.value.style.cursor = evt.type === "addfeature" ? "pointer" : "";
-  });
-
-  return { iconFeature, modify, layers };
+  return { iconFeature, layers };
 }
