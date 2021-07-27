@@ -1,4 +1,4 @@
-# WMS App - _Web Mapping service (WMS) using Open Geospatial Consortium (OGC)_
+# WMS App - _Web Mapping Service (WMS) using Open Geospatial Consortium (OGC)_
 
 ## Fundamental Assumption
 
@@ -6,6 +6,8 @@
 - PostgreSQL
 - Postgis
 - Tomcat
+- Node package manager (_npm_)
+- Ngrok (_for remote access_)
 
 ## Creating a spatial database
 
@@ -86,10 +88,15 @@ Passwd = Your PostgreSQL password.
 
 - Enable IIS feature [help](https://www.how2shout.com/how-to/how-to-install-iis-web-server-on-windows-10-step-by-step.html#:~:text=Windows%2010%20IIS%20Install%201%20Enable%20Internet%20Information,of%20how%20to%20host%20an%20HTML...%20See%20More)
 - Configure IIS and setup proxy in Geoserver [help](https://medium.com/random-gis-talks/access-geoserver-remotely-using-iis-b8cfb7742b9d)
+- Start `ngrok` on port 80
+
+### Update wms base url
+
+- Navigate to `src\composables\useOpenLayers.js`
+- Change to ngrok http url for remote use and to localhost url for local use
+- Deploy locally or via netlify!
 
 ## Project setup
-
-> Update wmsBaseUrl in `src\composables\useOpenLayers.js`
 
 ```
 npm install
