@@ -6,6 +6,8 @@ import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import { TileWMS, Vector as VectorSource, OSM, TileJSON } from "ol/source";
 import { Icon, Style } from "ol/style";
 
+const wmsBaseUrl = "http:192.168.43.35"; // "http://172.20.10.2"; // or http://localhost:8090";
+
 export function useOpenLayers() {
   const iconFeature = ref(null);
 
@@ -36,7 +38,7 @@ export function useOpenLayers() {
     }), // mapquest layer
     new TileLayer({
       source: new TileWMS({
-        url: "http://localhost:8090/geoserver/wmsproject/wms",
+        url: `${wmsBaseUrl}/geoserver/wmsproject/wms`,
         params: { LAYERS: "wmsproject:countriesdbpedia", TILED: true },
         serverType: "geoserver",
         transition: 0,

@@ -78,7 +78,7 @@ export default {
         layers: layersOSM,
         target: geoMap.value,
         view: new View({
-          center: [-0.187, 5.6037],
+          center: [0, 0],
           zoom: 4,
         }),
       });
